@@ -7,9 +7,9 @@
 go build -o goshred
 
 ## Usage
-./goshred <file1> [file2 ...]
+./goshred file1 [file2 ...]
 
-# Run tests (recommended: this project is validated via tests)
+## Run tests (recommended: this project is validated via tests)
 go test -v 
 
 ## strace (save syscall evidence to a file)
