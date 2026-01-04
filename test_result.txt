@@ -1,0 +1,82 @@
+=== RUN   TestShred
+=== RUN   TestShred/RegularFileRemoved
+    shred_test.go:135: === Starting subtest: "RegularFileRemoved" ===
+    shred_test.go:136: Path under test: /tmp/TestShredRegularFileRemoved1328163765/001/file.txt
+    shred_test.go:137: Expected: wantErr=false, wantExists=false
+    shred_test.go:150: Checking: no error is expected from Shred(...)
+    shred_test.go:152: Result: got no error as expected
+    shred_test.go:161: Filesystem check: exists=false (statErr=stat /tmp/TestShredRegularFileRemoved1328163765/001/file.txt: no such file or directory)
+    shred_test.go:171: Result: path was removed as expected
+    shred_test.go:177: === Finished subtest: "RegularFileRemoved" ===
+=== RUN   TestShred/EmptyFileRemoved
+    shred_test.go:135: === Starting subtest: "EmptyFileRemoved" ===
+    shred_test.go:136: Path under test: /tmp/TestShredEmptyFileRemoved2755911301/001/empty.txt
+    shred_test.go:137: Expected: wantErr=false, wantExists=false
+    shred_test.go:150: Checking: no error is expected from Shred(...)
+    shred_test.go:152: Result: got no error as expected
+    shred_test.go:161: Filesystem check: exists=false (statErr=stat /tmp/TestShredEmptyFileRemoved2755911301/001/empty.txt: no such file or directory)
+    shred_test.go:171: Result: path was removed as expected
+    shred_test.go:177: === Finished subtest: "EmptyFileRemoved" ===
+=== RUN   TestShred/NonExistingFile
+    shred_test.go:135: === Starting subtest: "NonExistingFile" ===
+    shred_test.go:136: Path under test: /tmp/TestShredNonExistingFile3125444366/001/does-not-exist
+    shred_test.go:137: Expected: wantErr=true, wantExists=false
+    shred_test.go:143: Checking: an error is expected from Shred(...)
+    shred_test.go:145: Result: got error as expected: stat /tmp/TestShredNonExistingFile3125444366/001/does-not-exist: stat /tmp/TestShredNonExistingFile3125444366/001/does-not-exist: no such file or directory
+    shred_test.go:161: Filesystem check: exists=false (statErr=stat /tmp/TestShredNonExistingFile3125444366/001/does-not-exist: no such file or directory)
+    shred_test.go:171: Result: path was removed as expected
+    shred_test.go:177: === Finished subtest: "NonExistingFile" ===
+=== RUN   TestShred/DirectoryIsNotRegularFile
+    shred_test.go:135: === Starting subtest: "DirectoryIsNotRegularFile" ===
+    shred_test.go:136: Path under test: /tmp/TestShredDirectoryIsNotRegularFile3663785057/001/subdir
+    shred_test.go:137: Expected: wantErr=true, wantExists=true
+    shred_test.go:143: Checking: an error is expected from Shred(...)
+    shred_test.go:145: Result: got error as expected: shred: /tmp/TestShredDirectoryIsNotRegularFile3663785057/001/subdir is not a regular file
+    shred_test.go:161: Filesystem check: exists=true (statErr=<nil>)
+    shred_test.go:165: Result: path still exists as expected
+    shred_test.go:177: === Finished subtest: "DirectoryIsNotRegularFile" ===
+=== RUN   TestShred/ReadOnlyFile
+    shred_test.go:135: === Starting subtest: "ReadOnlyFile" ===
+    shred_test.go:136: Path under test: /tmp/TestShredReadOnlyFile3058553561/001/readonly.txt
+    shred_test.go:137: Expected: wantErr=true, wantExists=true
+    shred_test.go:143: Checking: an error is expected from Shred(...)
+    shred_test.go:145: Result: got error as expected: open /tmp/TestShredReadOnlyFile3058553561/001/readonly.txt: open /tmp/TestShredReadOnlyFile3058553561/001/readonly.txt: permission denied
+    shred_test.go:161: Filesystem check: exists=true (statErr=<nil>)
+    shred_test.go:165: Result: path still exists as expected
+    shred_test.go:177: === Finished subtest: "ReadOnlyFile" ===
+--- PASS: TestShred (0.00s)
+    --- PASS: TestShred/RegularFileRemoved (0.00s)
+    --- PASS: TestShred/EmptyFileRemoved (0.00s)
+    --- PASS: TestShred/NonExistingFile (0.00s)
+    --- PASS: TestShred/DirectoryIsNotRegularFile (0.00s)
+    --- PASS: TestShred/ReadOnlyFile (0.00s)
+=== RUN   TestOverwriteDeterministicRandom
+    shred_test.go:187: Starting TestOverwriteDeterministicRandom: verifying deterministic overwrite using fake random source
+    shred_test.go:197: Created test file: /tmp/TestOverwriteDeterministicRandom4039009242/001/data.bin (size=4096 bytes)
+    shred_test.go:200: Using fake random source that always returns 0xAA
+    shred_test.go:203: overwriteFile completed without error
+    shred_test.go:209: Read back overwritten file: /tmp/TestOverwriteDeterministicRandom4039009242/001/data.bin (size=4096 bytes)
+    shred_test.go:212: File size remained the same after overwrite, as expected
+    shred_test.go:220: All bytes in the file are 0xAA as expected - deterministic overwrite verified
+--- PASS: TestOverwriteDeterministicRandom (0.00s)
+=== RUN   TestShredSymlink
+    shred_test.go:237: Starting TestShredSymlink: verifying behavior when shredding a symlink
+    shred_test.go:247: Created target file: /tmp/TestShredSymlink1231636929/001/target.txt
+    shred_test.go:252: Created symlink: /tmp/TestShredSymlink1231636929/001/link.txt -> /tmp/TestShredSymlink1231636929/001/target.txt
+    shred_test.go:256: Using fake random source that always returns 0xBB
+    shred_test.go:259: Shred on symlink completed without error
+    shred_test.go:266: Symlink was removed as expected
+    shred_test.go:274: Target file still exists after shredding the symlink
+    shred_test.go:279: Target file size remained unchanged after overwrite
+    shred_test.go:286: All bytes in the target file are 0xBB as expected - overwrite via symlink verified
+--- PASS: TestShredSymlink (0.00s)
+=== RUN   TestShredBigFile
+    shred_test.go:302: Starting TestShredBigFile: creating a big file of 10485760 bytes at /tmp/TestShredBigFile1238199152/001/bigfile.bin
+    shred_test.go:321: Big file created successfully, total written bytes = 10485760
+    shred_test.go:328: Shred(big file) completed without error
+    shred_test.go:332: Big file was removed as expected after Shred
+    shred_test.go:337: Shredding of 10485760 bytes took 87.223138ms
+    shred_test.go:338: Performance observation logged; no strict time assertion is enforced in this test
+--- PASS: TestShredBigFile (0.09s)
+PASS
+ok  	example.com/shred-go	0.103s
